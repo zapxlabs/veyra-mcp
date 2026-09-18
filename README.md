@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/veyra-mcp"><img src="https://img.shields.io/npm/v/veyra-mcp?color=0B7A62&label=npm" alt="npm"></a>
-  <a href="https://github.com/iykemoney92/veyra-mcp/actions/workflows/ci.yml"><img src="https://github.com/iykemoney92/veyra-mcp/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/zapxlabs/veyra-mcp/actions/workflows/ci.yml"><img src="https://github.com/zapxlabs/veyra-mcp/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-0B7A62" alt="MIT"></a>
   <a href="https://veyra.money/docs"><img src="https://img.shields.io/badge/docs-veyra.money-0B7A62" alt="Docs"></a>
 </p>
@@ -164,7 +164,7 @@ try {
 }
 ```
 
-`VEYRA_TOOLS` exports the tool definitions as JSON Schema, so you can register them with the Vercel AI SDK, LangChain, or plain function calling without a network round-trip. See [veyra-examples](https://github.com/iykemoney92/veyra-examples) for complete agents built with the Claude Agent SDK and the Vercel AI SDK.
+`VEYRA_TOOLS` exports the tool definitions as JSON Schema, so you can register them with the Vercel AI SDK, LangChain, or plain function calling without a network round-trip. See [veyra-examples](https://github.com/zapxlabs/veyra-examples) for complete agents built with the Claude Agent SDK and the Vercel AI SDK.
 
 ## What you are trusting
 
@@ -202,7 +202,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
 ## Links
 
 - Product: [veyra.money](https://veyra.money) · [Docs](https://veyra.money/docs) · [Pricing](https://veyra.money/pricing)
-- Examples: [iykemoney92/veyra-examples](https://github.com/iykemoney92/veyra-examples)
-- MCP Registry name: `io.github.iykemoney92/veyra`
+- Examples: [zapxlabs/veyra-examples](https://github.com/zapxlabs/veyra-examples)
+- MCP Registry name: `io.github.zapxlabs/veyra`
 
 MIT © Veyra

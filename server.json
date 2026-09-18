@@ -1,11 +1,11 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.iykemoney92/veyra",
+  "name": "io.github.zapxlabs/veyra",
   "title": "Veyra",
   "description": "Give AI agents a wallet with a spending limit. Non-custodial USDC on Base, server-enforced limits.",
   "websiteUrl": "https://veyra.money",
   "repository": {
-    "url": "https://github.com/iykemoney92/veyra-mcp",
+    "url": "https://github.com/zapxlabs/veyra-mcp",
     "source": "github"
   },
   "version": "0.1.0",

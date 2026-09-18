@@ -19,7 +19,7 @@ Requires the npm package to be live (the registry verifies `mcpName` in the publ
 
 ```bash
 brew install mcp-publisher      # or the curl one-liner in the registry docs
-mcp-publisher login github      # device-code flow, proves ownership of io.github.iykemoney92/*
+mcp-publisher login github      # device-code flow, proves ownership of io.github.zapxlabs/*
 mcp-publisher validate          # server.json in this directory
 mcp-publisher publish
 ```
@@ -28,7 +28,7 @@ Bump `version` in `server.json` to match `package.json` on every release.
 
 ## 3. Directories that crawl GitHub
 
-- **Glama**: https://glama.ai/mcp/servers — search for `iykemoney92/veyra-mcp`, click *Claim*, sign in with GitHub. Once claimed, the score badge in the README goes live.
+- **Glama**: https://glama.ai/mcp/servers — search for `zapxlabs/veyra-mcp`, click *Claim*, sign in with GitHub. Once claimed, the score badge in the README goes live.
 - **Smithery**: https://smithery.ai — *Add server*, point at this repo, choose *remote* with the URL `https://veyra.money/api/mcp` and auth type *API key* (bearer).
 - **PulseMCP** and **mcp.so** index the official registry and GitHub topics automatically.
 
@@ -36,8 +36,8 @@ Bump `version` in `server.json` to match `package.json` on every release.
 
 Two branches are ready on the forks:
 
-- https://github.com/iykemoney92/awesome-mcp-servers/tree/add-veyra → PR to `punkpeye/awesome-mcp-servers` (Finance & Fintech)
-- https://github.com/iykemoney92/awesome-remote-mcp-servers/tree/add-veyra → PR to `punkpeye/awesome-remote-mcp-servers` (Payments)
+- https://github.com/zapxlabs/awesome-mcp-servers/tree/add-veyra → PR to `punkpeye/awesome-mcp-servers` (Finance & Fintech)
+- https://github.com/zapxlabs/awesome-remote-mcp-servers/tree/add-veyra → PR to `punkpeye/awesome-remote-mcp-servers` (Payments)
 
 Open each with the compare link, keep the title as the commit message, and end the title with `🤖🤖🤖` if you want the maintainer's fast-track for agent-authored PRs.
 
