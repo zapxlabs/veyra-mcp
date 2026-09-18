@@ -1,0 +1,68 @@
+{
+  "name": "veyra-mcp",
+  "version": "0.1.0",
+  "mcpName": "io.github.iykemoney92/veyra",
+  "description": "Give AI agents a wallet with a spending limit. MCP server + typed client for Veyra: non-custodial USDC payments on Base with per-payment caps, daily caps, human approval bands and a recipient allowlist enforced server-side.",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "ai-agents",
+    "agent-payments",
+    "agentic-commerce",
+    "usdc",
+    "base",
+    "stablecoin",
+    "spending-limits",
+    "non-custodial",
+    "claude",
+    "cursor",
+    "codex",
+    "x402"
+  ],
+  "homepage": "https://veyra.money",
+  "bugs": "https://github.com/iykemoney92/veyra-mcp/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iykemoney92/veyra-mcp.git"
+  },
+  "license": "MIT",
+  "author": "Veyra <hello@veyra.money> (https://veyra.money)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "veyra-mcp": "./dist/bin.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build && npm test",
+    "test": "npm run build && node --test test/*.test.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

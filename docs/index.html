@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Veyra MCP</title>
+<meta name="description" content="Give your AI agent a wallet with a spending limit. Veyra is the MCP endpoint that lets agents pay in USDC on Base under caps, approvals and an allowlist you control.">
+<link rel="canonical" href="https://veyra.money">
+<meta property="og:title" content="Veyra — give your AI agent a wallet with a spending limit">
+<meta property="og:description" content="Non-custodial USDC payments on Base for AI agents. Per-payment caps, daily caps, human approval, recipient allowlist. One MCP endpoint.">
+<meta property="og:image" content="https://iykemoney92.github.io/veyra-mcp/social-preview.png">
+<meta property="og:url" content="https://iykemoney92.github.io/veyra-mcp/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M14 3.5L23.5 9v10L14 24.5 4.5 19V9L14 3.5Z' fill='none' stroke='%230B7A62' stroke-width='1.6'/%3E%3Cpath d='M14 7L20.5 10.8v6.4L14 21 7.5 17.2v-6.4L14 7Z' fill='none' stroke='%231A9B7A' stroke-width='1.4'/%3E%3C/svg%3E">
+<style>
+  :root{--brand:#0B7A62;--brand-ink:#075e4b;--ink:#0f172a;--muted:#475569;--line:#e2e8f0;--bg:#f4f7f6;--card:#fff;--code:#0f172a;--code-ink:#e2e8f0}
+  @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--ink:#f1f5f9;--muted:#94a3b8;--line:#1e293b;--bg:#0b1220;--card:#111a2e;--code:#020617;--code-ink:#e2e8f0;--brand:#2fbf9c;--brand-ink:#5fd6b8}}
+  :root[data-theme=dark]{--ink:#f1f5f9;--muted:#94a3b8;--line:#1e293b;--bg:#0b1220;--card:#111a2e;--code:#020617;--code-ink:#e2e8f0;--brand:#2fbf9c;--brand-ink:#5fd6b8}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
+  a{color:var(--brand)}
+  .wrap{max-width:960px;margin:0 auto;padding:0 16px}
+  header{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  nav a{margin-left:18px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none}
+  nav a:hover{color:var(--ink)}
+  .hero{padding:56px 0 40px}
+  h1{font-size:clamp(2.2rem,6vw,4rem);line-height:1.02;letter-spacing:-.03em;margin:0 0 18px}
+  h1 span{color:var(--brand)}
+  .lead{font-size:1.15rem;color:var(--muted);max-width:640px;margin:0 0 28px}
+  .cta{display:inline-flex;align-items:center;min-height:44px;padding:10px 22px;border-radius:12px;background:var(--brand);color:#fff;font-weight:600;text-decoration:none;margin:0 10px 10px 0}
+  .cta.secondary{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  pre{background:var(--code);color:var(--code-ink);padding:16px;border-radius:12px;overflow:auto;font:13.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;margin:0}
+  section{padding:36px 0;border-top:1px solid var(--line)}
+  h2{font-size:1.6rem;letter-spacing:-.02em;margin:0 0 8px}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);margin:0 0 6px}
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .card h3{margin:0 0 6px;font-size:1.05rem}
+  .card p{margin:0;color:var(--muted);font-size:.95rem}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;margin-top:16px}
+  td,th{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:600;font-size:.85rem}
+  code{font:.9em ui-monospace,SFMono-Regular,Menlo,monospace}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 10px}
+  .tabs button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 12px;border-radius:10px;font:inherit;font-size:.9rem;cursor:pointer}
+  .tabs button[aria-selected=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+  .panel{display:none}.panel[data-active]{display:block}
+  footer{padding:32px 0;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+  footer a{margin-right:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="logo" href="https://veyra.money" aria-label="Veyra">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 3.5L23.5 9v10L14 24.5 4.5 19V9L14 3.5Z" stroke="#0B7A62" stroke-width="1.6"/><path d="M14 7L20.5 10.8v6.4L14 21 7.5 17.2v-6.4L14 7Z" stroke="#1A9B7A" stroke-width="1.4"/></svg>
+      Veyra
+    </a>
+    <nav>
+      <a href="https://github.com/iykemoney92/veyra-mcp">GitHub</a>
+      <a href="https://veyra.money/docs">Docs</a>
+      <a href="https://veyra.money/pricing">Pricing</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <p class="kicker">MCP server for agent payments</p>
+    <h1>Give your AI agent a wallet <span>with a spending limit.</span></h1>
+    <p class="lead">Connect a wallet you already own, set what an agent may spend, and hand it one MCP endpoint. It pays in USDC on Base on its own, never past your limits, never with your keys.</p>
+    <a class="cta" href="https://veyra.money/login">Start free</a>
+    <a class="cta secondary" href="https://github.com/iykemoney92/veyra-mcp">Read the source</a>
+  </div>
+
+  <section>
+    <p class="kicker">Install</p>
+    <h2>One line, any MCP host</h2>
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="code">Claude Code</button>
+      <button role="tab" data-tab="cursor">Cursor</button>
+      <button role="tab" data-tab="codex">Codex</button>
+      <button role="tab" data-tab="desktop">Claude Desktop</button>
+      <button role="tab" data-tab="ts">TypeScript</button>
+    </div>
+    <div class="panel" data-tab="code" data-active><pre>claude mcp add --transport http veyra https://veyra.money/api/mcp \
+  --header "Authorization: Bearer veyra_..."</pre></div>
+    <div class="panel" data-tab="cursor"><pre>{
+  "mcpServers": {
+    "veyra": {
+      "url": "https://veyra.money/api/mcp",
+      "headers": { "Authorization": "Bearer veyra_..." }
+    }
+  }
+}</pre></div>
+    <div class="panel" data-tab="codex"><pre>export VEYRA_TOKEN=veyra_...
+codex mcp add veyra --url https://veyra.money/api/mcp --bearer-token-env-var VEYRA_TOKEN</pre></div>
+    <div class="panel" data-tab="desktop"><pre>{
+  "mcpServers": {
+    "veyra": {
+      "command": "npx",
+      "args": ["-y", "veyra-mcp"],
+      "env": { "VEYRA_TOKEN": "veyra_..." }
+    }
+  }
+}</pre></div>
+    <div class="panel" data-tab="ts"><pre>npm install veyra-mcp
+
+import { VeyraClient, idempotencyKey } from "veyra-mcp";
+const veyra = new VeyraClient({ token: process.env.VEYRA_TOKEN! });
+const payment = await veyra.createPayment({
+  amount: "1.25", recipient: "0x…", reason: "500 API calls",
+  idempotency_key: idempotencyKey(),
+});</pre></div>
+  </section>
+
+  <section>
+    <p class="kicker">How it decides</p>
+    <h2>Three bands, enforced by the server</h2>
+    <div class="grid">
+      <div class="card"><h3>Under auto-max</h3><p>Executes from a capped on-chain allowance you granted. The token contract enforces the cap.</p></div>
+      <div class="card"><h3>In the ask band</h3><p>The agent gets a one-time link. You approve in your own wallet. Veyra verifies the receipt.</p></div>
+      <div class="card"><h3>Over the limits</h3><p>Blocked, with a reason the agent can relay. Daily caps and the recipient allowlist apply throughout.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Tools</p>
+    <h2>What the agent can call</h2>
+    <table>
+      <tr><th>Tool</th><th>Purpose</th></tr>
+      <tr><td><code>get_capabilities</code></td><td>Rails, networks, assets, limits and allowlist in force right now</td></tr>
+      <tr><td><code>get_budget</code></td><td>Daily limit, spent today, per-payment limit, auto and ask bands</td></tr>
+      <tr><td><code>list_payment_sources</code></td><td>Masked sources and whether each can settle unattended</td></tr>
+      <tr><td><code>create_payment</code></td><td>Create a payment intent; the result says what the policy decided</td></tr>
+      <tr><td><code>get_payment</code> / <code>list_payments</code> / <code>cancel_payment</code></td><td>Track and cancel</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <p class="kicker">Trust</p>
+    <h2>Control plane, not custody</h2>
+    <p style="color:var(--muted);max-width:700px">Veyra never holds funds. Above your auto-approve limit you sign every transfer yourself. Within it, a capped ERC-20 allowance does the work and you can revoke it any time. A simulated rail lets you wire everything up before touching real money, and it is labelled as simulated everywhere. <a href="https://veyra.money/docs#trust">Read exactly what you are trusting.</a></p>
+  </section>
+
+  <footer>
+    <a href="https://veyra.money">veyra.money</a>
+    <a href="https://github.com/iykemoney92/veyra-mcp">veyra-mcp</a>
+    <a href="https://github.com/iykemoney92/veyra-examples">examples</a>
+    <a href="https://veyra.money/terms">Terms</a>
+    <a href="https://veyra.money/privacy">Privacy</a>
+  </footer>
+</div>
+<script>
+  document.querySelectorAll('.tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.tabs button').forEach(function(x){x.setAttribute('aria-selected','false')});
+      document.querySelectorAll('.panel').forEach(function(p){p.removeAttribute('data-active')});
+      b.setAttribute('aria-selected','true');
+      document.querySelector('.panel[data-tab="'+b.dataset.tab+'"]').setAttribute('data-active','');
+    });
+  });
+</script>
+</body>
+</html>
