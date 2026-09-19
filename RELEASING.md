@@ -34,19 +34,26 @@ Bump `version` in `server.json` to match `package.json` on every release.
 
 ## 3. Directories that crawl GitHub
 
-- **Glama**: https://glama.ai/mcp/servers — search for `zapxlabs/veyra-mcp`, click *Claim*, sign in with GitHub. Once claimed, the score badge in the README goes live.
-- **Smithery**: https://smithery.ai — *Add server*, point at this repo, choose *remote* with the URL `https://veyra.money/api/mcp` and auth type *API key* (bearer).
+- **Glama**: https://glama.ai/mcp/servers — not yet indexed as of 2026-09-19. *Add Server* opens a signup wall
+  (email or GitHub OAuth, with a CAPTCHA), so this needs a human. Once the server is listed, the score badge
+  already referenced in README.md starts rendering. Glama also has a separate *Connectors* directory for remote
+  endpoints — worth adding `https://veyra.money/api/mcp` there too, since both awesome-list categories show
+  connector badges.
+- **Smithery**: https://smithery.ai/new — also behind a sign-in wall (email, Google or GitHub). *Add server*,
+  point at this repo, choose *remote* with the URL `https://veyra.money/api/mcp` and auth type *API key* (bearer).
 - **PulseMCP** and **mcp.so** index the official registry and GitHub topics automatically.
 
 ## 4. Awesome lists
 
-Two branches are ready on the forks:
+Both are open (titles end in `🤖🤖🤖`, the maintainer's fast-track marker for agent-authored PRs):
 
-- https://github.com/zapxlabs/awesome-mcp-servers/tree/add-veyra → PR to `punkpeye/awesome-mcp-servers` (Finance & Fintech)
-- https://github.com/zapxlabs/awesome-remote-mcp-servers/tree/add-veyra → PR to `punkpeye/awesome-remote-mcp-servers` (Payments)
+- punkpeye/awesome-mcp-servers#14682 — Finance & Fintech
+- punkpeye/awesome-remote-mcp-servers#434 — Payments
 
-Open each with the compare link, keep the title as the commit message, and end the title with `🤖🤖🤖` if you want the maintainer's fast-track for agent-authored PRs.
+The remote-list PR has one unchecked box: the entry has no Glama connector badge, because the connector does
+not exist yet. Add the badge and push to the same branch once Glama lists it.
 
 ## 5. Social preview image
 
-GitHub has no API for this. Repo → Settings → General → Social preview → upload `assets/social-preview.png`.
+Done — `assets/social-preview.png` is uploaded. GitHub has no API for this; to change it, go to
+Repo → Settings → General → Social preview.
