@@ -39,13 +39,18 @@ Bump `version` in `server.json` to match `package.json` on every release.
   dashboard and connect directly, so no spending-capable credential passes through Smithery's gateway.
   Smithery warns about the missing `configSchema` in the release log; that warning is the intended state.
   Re-publish a release from the Releases tab whenever the tool surface changes.
-- **Glama**: both submissions are in review as of 2026-09-19, made from the zapxlabs account.
-  *Runs from source* → the `zapxlabs/veyra-mcp` repo. *Hosted endpoint* → `https://veyra.money/api/mcp`,
-  which is the one that yields the **connector** badge the remote awesome list wants.
-  Glama emails on approval: the repo listing then asks for a Dockerfile for its safety and quality checks
-  (only servers that pass are indexed for search), and the connector listing asks for health-check setup
-  (only healthy connectors are indexed). Watch labszapx@gmail.com for both.
-  Once the connector is live, add its badge to the awesome-remote-mcp-servers PR and tick the last box.
+- **Glama**: both listings are live.
+  - Server (the repo): https://glama.ai/mcp/servers/zapxlabs/veyra-mcp — Glama auto-indexed it from GitHub
+    before we submitted, which is why the manual *Runs from source* submission was rejected as a duplicate.
+    Currently rated **B**. Badge: `https://glama.ai/mcp/servers/zapxlabs/veyra-mcp/badges/score.svg`
+  - Connector (the endpoint): https://glama.ai/mcp/connectors/money.veyra/veyra — namespace is `money.veyra`,
+    derived from the domain, **not** `io.github.zapxlabs`. Badge:
+    `https://glama.ai/mcp/connectors/money.veyra/veyra/badges/score.svg`
+  - Neither is **claimed** yet. Claiming is optional (Glama keeps fetching either way) but unlocks editing the
+    description, health checks and analytics — the connector currently reads "Not tested / Never" because
+    health checks only run for claimed connectors. Verification options are GitHub OAuth, an HTTP challenge,
+    or a DNS TXT record. Prefer the HTTP challenge or DNS record: they prove control of veyra.money, which is
+    the right thing to prove for a `money.veyra` namespace, and hand Glama no GitHub account access.
 
 ## 4. Awesome lists
 
@@ -54,8 +59,13 @@ Both are open (titles end in `🤖🤖🤖`, the maintainer's fast-track marker 
 - punkpeye/awesome-mcp-servers#14682 — Finance & Fintech
 - punkpeye/awesome-remote-mcp-servers#434 — Payments
 
-The remote-list PR has one unchecked box: the entry has no Glama connector badge, because the connector does
-not exist yet. Add the badge and push to the same branch once Glama lists it.
+Both now pass the maintainer's bots: #14682 has `has-emoji`, `valid-name`, `has-glama`; #434 has
+`endpoint-ok`, `has-connector` and all checks green.
+
+One open question on #434. Its checker probes the endpoint, sees the handshake answer anonymously, and wants
+the auth marker changed from 🔑 (API key) to 🔓 (none). That would be misleading — every `tools/call` still
+needs a bearer token — so we left it at 🔑 and explained in a comment, offering to defer to the maintainer.
+If they insist on 🔓, change it; it is their list.
 
 ## 5. Social preview image
 
