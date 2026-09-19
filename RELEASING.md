@@ -34,22 +34,16 @@ Bump `version` in `server.json` to match `package.json` on every release.
 
 ## 3. Directories that crawl GitHub
 
-- **Glama**: https://glama.ai/mcp/servers — not yet indexed as of 2026-09-19. *Add Server* opens a signup wall
-  (email or GitHub OAuth, with a CAPTCHA), so this needs a human. Once the server is listed, the score badge
-  already referenced in README.md starts rendering. Glama also has a separate *Connectors* directory for remote
-  endpoints — worth adding `https://veyra.money/api/mcp` there too, since both awesome-list categories show
-  connector badges.
-- **Smithery**: listed as `labszapx/veyra` (https://smithery.ai/servers/labszapx/veyra), **draft, not published**.
-  Metadata is filled in (quality 52/100). Capabilities are empty and the release shows `AUTHORIZE`, because
-  Smithery's gateway cannot complete `initialize` / `tools/list` against an endpoint that requires a bearer token.
-  Two ways forward, and they are a product decision, not a marketing one:
-    1. Let `initialize` and `tools/list` answer without a credential (see note below). Every directory can then
-       enumerate the tools, and no user credential ever touches a third party. Preferred.
-    2. Define a Smithery connection parameter for the bearer token. Smithery's gateway then sits in the payment
-       path and forwards spending-capable credentials. This contradicts the trust story in /docs#trust.
-  Do not hit *Publish* on the release until one of these is settled; an `AUTHORIZE` listing with no tools
-  advertises a broken server.
-- **PulseMCP** and **mcp.so** index the official registry and GitHub topics automatically.
+- **Smithery**: live and published at https://smithery.ai/servers/labszapx/veyra (quality 69/100, all 7
+  tools enumerated). No connection parameter is defined, deliberately: users get a token from the Veyra
+  dashboard and connect directly, so no spending-capable credential passes through Smithery's gateway.
+  Smithery warns about the missing `configSchema` in the release log; that warning is the intended state.
+  Re-publish a release from the Releases tab whenever the tool surface changes.
+- **Glama**: still pending, and needs a human. https://glama.ai/mcp/servers → *Add Server* opens a signup
+  wall with a CAPTCHA. Glama also auto-indexes public GitHub repos, so this may resolve itself. The Glama
+  score badge URL used in the awesome-mcp-servers entry already returns an SVG.
+  Worth also listing the remote endpoint under Glama's separate *Connectors* directory, which is what
+  produces the connector badge both awesome lists display.
 
 ## 4. Awesome lists
 
