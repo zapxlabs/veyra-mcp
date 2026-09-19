@@ -39,8 +39,16 @@ Bump `version` in `server.json` to match `package.json` on every release.
   already referenced in README.md starts rendering. Glama also has a separate *Connectors* directory for remote
   endpoints — worth adding `https://veyra.money/api/mcp` there too, since both awesome-list categories show
   connector badges.
-- **Smithery**: https://smithery.ai/new — also behind a sign-in wall (email, Google or GitHub). *Add server*,
-  point at this repo, choose *remote* with the URL `https://veyra.money/api/mcp` and auth type *API key* (bearer).
+- **Smithery**: listed as `labszapx/veyra` (https://smithery.ai/servers/labszapx/veyra), **draft, not published**.
+  Metadata is filled in (quality 52/100). Capabilities are empty and the release shows `AUTHORIZE`, because
+  Smithery's gateway cannot complete `initialize` / `tools/list` against an endpoint that requires a bearer token.
+  Two ways forward, and they are a product decision, not a marketing one:
+    1. Let `initialize` and `tools/list` answer without a credential (see note below). Every directory can then
+       enumerate the tools, and no user credential ever touches a third party. Preferred.
+    2. Define a Smithery connection parameter for the bearer token. Smithery's gateway then sits in the payment
+       path and forwards spending-capable credentials. This contradicts the trust story in /docs#trust.
+  Do not hit *Publish* on the release until one of these is settled; an `AUTHORIZE` listing with no tools
+  advertises a broken server.
 - **PulseMCP** and **mcp.so** index the official registry and GitHub topics automatically.
 
 ## 4. Awesome lists
