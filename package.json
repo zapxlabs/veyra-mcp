@@ -38,7 +38,7 @@
     }
   },
   "bin": {
-    "veyra-mcp": "./dist/bin.js"
+    "veyra-mcp": "dist/bin.js"
   },
   "files": [
     "dist",
