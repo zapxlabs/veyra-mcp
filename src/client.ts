@@ -31,6 +31,19 @@ export type PaymentView = {
   next_action: { url?: string; expires_at?: string; [k: string]: unknown } | null;
   approval_expires_at: string | null;
   policy_reason: string | null;
+  /**
+   * The on-chain transaction, once a payment has settled on a real rail.
+   * Null while pending, and null on the simulated rail — its reference is not
+   * a chain transaction and must never be shown as proof that money moved.
+   */
+  tx_ref?: string | null;
+  explorer_url?: string | null;
+  /**
+   * Set when an identical payment to the same recipient was created minutes
+   * ago and is still live. You are probably retrying something that already
+   * worked — read that payment before creating another.
+   */
+  possible_duplicate_of?: string | null;
 };
 
 export type Capabilities = {
@@ -85,7 +98,17 @@ export type CreatePaymentInput = {
   idempotency_key: string;
 };
 
-/** A deliberate refusal from Veyra — policy, validation, auth, not-found. */
+/**
+ * Veyra refused to process the call at all: a malformed argument, a
+ * credential it does not recognise, a payment id that isn't yours.
+ *
+ * Note what is *not* in that list. A payment the policy declines is not an
+ * error — the call did exactly what it was asked and the answer was no, so it
+ * comes back as an ordinary result with `status: "failed"` and a
+ * `policy_reason`. Reaching for try/catch to detect refusals therefore misses
+ * every blocked payment and reads it as a success. Use `paymentOutcome` or
+ * `movedRealMoney` below.
+ */
 export class VeyraToolError extends Error {
   readonly code: string;
   constructor(code: string, message: string) {
@@ -347,4 +370,55 @@ export function idempotencyKey(prefix = "pay"): string {
       ? crypto.randomUUID()
       : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
   return `${prefix}_${rand}`;
+}
+
+/**
+ * What actually happened to a payment, as one unambiguous label.
+ *
+ * Reading `status` directly is easy to get subtly wrong in the two ways that
+ * matter: `confirmed_simulated` looks like success but moved nothing, and a
+ * policy refusal arrives as a plain `failed` rather than a thrown error. Both
+ * mistakes fail in the same direction — telling a user money moved when it
+ * did not.
+ */
+export type PaymentOutcome =
+  | "settled"
+  | "simulated"
+  | "awaiting_approval"
+  | "blocked"
+  | "in_progress"
+  | "failed"
+  | "cancelled"
+  | "expired";
+
+export function paymentOutcome(payment: PaymentView): PaymentOutcome {
+  if (payment.status === "confirmed") return "settled";
+  if (payment.status === "confirmed_simulated") return "simulated";
+  if (payment.status === "awaiting_approval") return "awaiting_approval";
+  if (payment.status === "cancelled") return "cancelled";
+  if (payment.status === "expired") return "expired";
+  if (payment.status === "failed") {
+    return payment.policy_decision === "blocked" ? "blocked" : "failed";
+  }
+  return "in_progress";
+}
+
+/**
+ * The only check that should gate telling a human that value moved.
+ *
+ * Deliberately strict: a simulated settlement returns false even though its
+ * status begins with "confirmed", because the whole point of the simulated
+ * rail is that nothing left anyone's wallet.
+ */
+export function movedRealMoney(payment: PaymentView): boolean {
+  return payment.status === "confirmed" && payment.rail !== "mock";
+}
+
+/** True while the payment can still change state on its own. */
+export function isPending(payment: PaymentView): boolean {
+  return (
+    payment.status === "pending" ||
+    payment.status === "submitted" ||
+    payment.status === "awaiting_approval"
+  );
 }

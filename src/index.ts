@@ -4,11 +4,15 @@ export {
   VeyraToolError,
   VeyraTransportError,
   idempotencyKey,
+  isPending,
+  movedRealMoney,
+  paymentOutcome,
 } from "./client.js";
 export type {
   Budget,
   Capabilities,
   CreatePaymentInput,
+  PaymentOutcome,
   PaymentSource,
   PaymentStatus,
   PaymentView,

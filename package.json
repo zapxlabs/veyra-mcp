@@ -1,6 +1,6 @@
 {
   "name": "veyra-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "mcpName": "io.github.zapxlabs/veyra",
   "description": "Give AI agents a wallet with a spending limit. MCP server + typed client for Veyra: non-custodial USDC payments on Base with per-payment caps, daily caps, human approval bands and a recipient allowlist enforced server-side.",
   "keywords": [

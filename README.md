@@ -136,33 +136,78 @@ npm install veyra-mcp
 ```
 
 ```ts
-import { VeyraClient, VeyraToolError, idempotencyKey } from "veyra-mcp";
+import {
+  VeyraClient,
+  VeyraToolError,
+  idempotencyKey,
+  movedRealMoney,
+  paymentOutcome,
+} from "veyra-mcp";
 
 const veyra = new VeyraClient({ token: process.env.VEYRA_TOKEN! });
 
 const budget = await veyra.getBudget();
 console.log(`spent ${budget.spent_today} of ${budget.daily_limit} USDC today`);
 
-try {
-  const payment = await veyra.createPayment({
-    amount: "1.25",
-    recipient: "0x1234…abcd",          // USDC on Base
-    reason: "Weather API, 500 calls",
-    idempotency_key: idempotencyKey("weather"),
-  });
+const payment = await veyra.createPayment({
+  amount: "1.25",
+  recipient: "0x1234…abcd",          // USDC on Base
+  reason: "Weather API, 500 calls",
+  idempotency_key: idempotencyKey("weather"),
+});
 
-  if (payment.status === "awaiting_approval") {
-    console.log("Owner needs to approve:", payment.next_action?.url);
+switch (paymentOutcome(payment)) {
+  case "settled":
+    // The only case where value actually moved.
+    console.log("paid —", (await veyra.getPayment(payment.payment_id)).tx_ref);
+    break;
+  case "simulated":
+    console.log("settled on the simulated rail; no money moved");
+    break;
+  case "awaiting_approval": {
+    console.log("owner must approve:", payment.next_action?.url);
     const settled = await veyra.waitForPayment(payment.payment_id);
-    console.log(settled.status);
+    console.log(movedRealMoney(settled) ? "paid" : paymentOutcome(settled));
+    break;
   }
+  case "blocked":
+    console.log("policy refused it:", payment.policy_reason);
+    break;
+}
+```
+
+### Policy refusals are not exceptions
+
+This is the one thing worth reading twice. A payment the policy declines comes
+back as an ordinary result with `status: "failed"` — the call did what it was
+asked and the answer was no. Only a malformed argument, a bad credential or an
+unknown id throws.
+
+So `try`/`catch` is the wrong tool for detecting refusals: it misses every
+blocked payment and reads it as a success. Use `paymentOutcome`, and use
+`movedRealMoney` before telling anyone value moved — it returns `false` for a
+simulated settlement even though the status begins with "confirmed".
+
+Reserve `catch` for what genuinely failed:
+
+```ts
+try {
+  await veyra.createPayment({ /* … */ });
 } catch (e) {
   if (e instanceof VeyraToolError) {
-    // A deliberate refusal: policy, validation, allowlist, auth.
-    console.log(e.code, e.message);   // e.g. "POLICY_BLOCKED …"
+    console.log(e.code, e.message);   // VALIDATION_ERROR, UNKNOWN_CREDENTIAL, NOT_FOUND
   } else throw e;
 }
 ```
+
+### Never retry because you are unsure
+
+If you cannot tell whether a payment worked, **read it** — do not create
+another. `getPayment` returns `tx_ref` once a real payment has settled, which
+is both your confirmation and what you show the recipient as proof. Reusing the
+same `idempotency_key` returns the original payment; a new key spends again.
+Veyra also sets `possible_duplicate_of` when an identical payment to the same
+recipient is already live.
 
 `VEYRA_TOOLS` exports the tool definitions as JSON Schema, so you can register them with the Vercel AI SDK, LangChain, or plain function calling without a network round-trip. See [veyra-examples](https://github.com/zapxlabs/veyra-examples) for complete agents built with the Claude Agent SDK and the Vercel AI SDK.
 

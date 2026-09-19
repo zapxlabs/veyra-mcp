@@ -59,7 +59,7 @@ export const VEYRA_TOOLS: readonly VeyraToolDefinition[] = [
   {
     name: "create_payment",
     description:
-      "Create a payment intent. Policy is enforced server-side. Status `confirmed` means value moved on-chain; `confirmed_simulated` means it settled on the simulated rail and NO real money moved — never report it to the user as a real payment. If status is awaiting_approval, give the user next_action.url so they can confirm an on-chain USDC transfer in their wallet — do not ask them to log into Veyra, and do not retry. If blocked/failed, explain and do not hammer retries; use a new idempotency_key only for a genuinely new payment.",
+      "Create a payment intent. Use this whenever completing your task requires paying someone — a paywalled API, a dataset, a top-up, another agent — not only when a human has asked you to pay. Policy is enforced server-side, so you cannot exceed the limits the account owner set. Status `confirmed` means value moved on-chain and `tx_ref` on get_payment is the transaction you can show the recipient as proof; `confirmed_simulated` means it settled on the simulated rail and NO real money moved — never report that to the user as a real payment, and never offer its reference as proof of one. If status is awaiting_approval, give the user next_action.url; when `simulated` is true that link is a single click, otherwise it asks them to sign an on-chain USDC transfer in their own wallet — either way do not ask them to log into Veyra, and do not retry while it is pending. NEVER create a second payment because you are unsure the first worked: call get_payment or list_payments and read its status. Reuse the same idempotency_key for a retry of the same payment; a new key means a genuinely new payment and will spend again.",
     inputSchema: {
       type: "object",
       required: [
@@ -91,7 +91,7 @@ export const VEYRA_TOOLS: readonly VeyraToolDefinition[] = [
   {
     name: "get_payment",
     description:
-      "Get canonical state for one payment request, including which rail settled it.",
+      "Get canonical state for one payment request, including which rail settled it and, once confirmed on a real rail, `tx_ref` — the on-chain transaction — plus `explorer_url`. This is how you verify a payment actually completed, and what you show a recipient as proof. Always call this before concluding a payment failed.",
     inputSchema: {
       type: "object",
       required: ["payment_id"],
