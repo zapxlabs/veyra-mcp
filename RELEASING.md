@@ -4,6 +4,9 @@ Steps that need an account login and therefore a human. Everything else (build, 
 
 ## 1. Publish to npm
 
+npm requires two-factor auth on the publishing account. Enable it once at
+https://www.npmjs.com/settings/zapxlabs/tfa (authenticator app), then:
+
 ```bash
 npm login                       # once
 npm version patch|minor|major   # bumps package.json + tags
@@ -15,7 +18,10 @@ Then create a GitHub release for the tag with the CHANGELOG entry as the body.
 
 ## 2. Publish to the official MCP Registry
 
-Requires the npm package to be live (the registry verifies `mcpName` in the published package.json).
+Status: `io.github.zapxlabs/veyra` 0.1.0 is published with the **remote endpoint only**. The npm
+package entry in `server.json` needs the package to be live on npm first (the registry verifies
+`mcpName` in the published package.json), so after the first npm publish bump `version` in both
+`package.json` and `server.json` to 0.1.1 and publish the full `server.json`.
 
 ```bash
 brew install mcp-publisher      # or the curl one-liner in the registry docs
