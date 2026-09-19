@@ -39,11 +39,13 @@ Bump `version` in `server.json` to match `package.json` on every release.
   dashboard and connect directly, so no spending-capable credential passes through Smithery's gateway.
   Smithery warns about the missing `configSchema` in the release log; that warning is the intended state.
   Re-publish a release from the Releases tab whenever the tool surface changes.
-- **Glama**: still pending, and needs a human. https://glama.ai/mcp/servers → *Add Server* opens a signup
-  wall with a CAPTCHA. Glama also auto-indexes public GitHub repos, so this may resolve itself. The Glama
-  score badge URL used in the awesome-mcp-servers entry already returns an SVG.
-  Worth also listing the remote endpoint under Glama's separate *Connectors* directory, which is what
-  produces the connector badge both awesome lists display.
+- **Glama**: both submissions are in review as of 2026-09-19, made from the zapxlabs account.
+  *Runs from source* → the `zapxlabs/veyra-mcp` repo. *Hosted endpoint* → `https://veyra.money/api/mcp`,
+  which is the one that yields the **connector** badge the remote awesome list wants.
+  Glama emails on approval: the repo listing then asks for a Dockerfile for its safety and quality checks
+  (only servers that pass are indexed for search), and the connector listing asks for health-check setup
+  (only healthy connectors are indexed). Watch labszapx@gmail.com for both.
+  Once the connector is live, add its badge to the awesome-remote-mcp-servers PR and tick the last box.
 
 ## 4. Awesome lists
 
