@@ -18,10 +18,10 @@ Then create a GitHub release for the tag with the CHANGELOG entry as the body.
 
 ## 2. Publish to the official MCP Registry
 
-Status: `io.github.zapxlabs/veyra` 0.1.0 is published with the **remote endpoint only**. The npm
-package entry in `server.json` needs the package to be live on npm first (the registry verifies
-`mcpName` in the published package.json), so after the first npm publish bump `version` in both
-`package.json` and `server.json` to 0.1.1 and publish the full `server.json`.
+Status: `io.github.zapxlabs/veyra` 0.1.1 is live with both the remote endpoint and the npm
+package (`veyra-mcp@0.1.0`). Registry versions are immutable, so the server.json version runs one
+ahead of the package until the next npm release; from then on bump both to the same number.
+The registry verifies `mcpName` in the published package.json, so always `npm publish` first.
 
 ```bash
 brew install mcp-publisher      # or the curl one-liner in the registry docs
