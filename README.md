@@ -76,6 +76,16 @@ codex mcp add veyra --url https://veyra.money/api/mcp --bearer-token-env-var VEY
 </details>
 
 <details>
+<summary><b>Gemini CLI</b> (extension)</summary>
+
+```bash
+gemini extensions install https://github.com/zapxlabs/veyra-mcp
+```
+
+The extension runs the `veyra-mcp` stdio bridge and asks for your `veyra_...` token as a setting. You can also set `VEYRA_TOKEN` in your shell before starting Gemini CLI.
+</details>
+
+<details>
 <summary><b>Claude Desktop</b> and any host that cannot send a bearer header (<code>claude_desktop_config.json</code>)</summary>
 
 ```json

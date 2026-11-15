@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- **Gemini CLI extension.** `gemini-extension.json` at the repo root, so
+  `gemini extensions install https://github.com/zapxlabs/veyra-mcp` sets up the
+  stdio bridge and asks for the token as a setting.
+- README: Gemini CLI install steps.
+- Removed the `x402` npm keyword. Veyra pays a seller's address under your
+  limits; it does not speak the x402 protocol itself.
+
 ## 0.1.1 — 2026-09-19
 
 - **`paymentOutcome` and `movedRealMoney`.** The README used to show policy

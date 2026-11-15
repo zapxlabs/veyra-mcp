@@ -1,0 +1,19 @@
+{
+  "name": "veyra",
+  "version": "0.1.1",
+  "description": "Payments for AI agents with server-enforced spending limits: per-payment and daily caps, a recipient allowlist and human approval. Try it on a simulated rail with no money.",
+  "mcpServers": {
+    "veyra": {
+      "command": "npx",
+      "args": ["-y", "veyra-mcp"]
+    }
+  },
+  "settings": [
+    {
+      "name": "Veyra token",
+      "description": "Your veyra_... endpoint token (free at veyra.money/docs)",
+      "envVar": "VEYRA_TOKEN",
+      "sensitive": true
+    }
+  ]
+}
